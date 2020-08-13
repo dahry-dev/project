@@ -132,6 +132,7 @@ while ($data_order = mysqli_fetch_assoc($check_order_top)) {
 		}
 		$update_order = $conn->query("UPDATE semua_pembelian SET status = '$status' WHERE id_pesan = '$o_oid'");
 		$update_order = $conn->query("UPDATE pembelian_pulsa SET status = '$status', keterangan = '$sn' WHERE oid = '$o_oid'");
+$update_order = $conn->query("UPDATE pembelian_pascabayar SET status = '$status', keterangan = '$sn' WHERE oid = '$o_oid'");
 	}
 }
 
