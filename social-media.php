@@ -86,7 +86,8 @@ require '../lib/session_user.php';
 		    } else if ($post_jumlah > $data_layanan['max']) {
 			    $_SESSION['hasil'] = array('alert' => 'danger', 'pesan' => 'Ups, Maksimal Jumlah Pemesanan Adalah '.number_format($data_layanan['max'],0,',','.').'<script>swal("Yahh Gagal!", "Jumlah Maksimal Pemesanan Adalah '.number_format($data_layanan['max'],0,',','.').'", "error");</script>');
 			
-		    } else if ($data_user['saldo_top_up'] < $harga) {
+		
+		} else if ($data_user['saldo_sosmed'] < $harga) {
 			    $_SESSION['hasil'] = array('alert' => 'danger', 'pesan' => 'Yahh, Saldo  Kamu Tidak Mencukupi Untuk Melakukan Pemesanan Ini.<script>swal("Yahh Gagal!", "Saldo Sosial Media Kamu Tidak Mencukupi Untuk Melakukan Pemesanan Ini.", "error");</script>');
 
 		    } else if (mysqli_num_rows($cek_pesanan) == 1) {
@@ -155,7 +156,7 @@ require '../lib/session_user.php';
 			            $data_top = mysqli_fetch_assoc($check_top);
 			            if ($conn->query("INSERT INTO pembelian_sosmed VALUES ('','$order_id', '$provider_oid', '$sess_username', '$layanan', '$post_target', '$post_jumlah', '$post_jumlah', '$start_count', '$harga', '$profit', '$koin', 'Pending', '$date', '$time', '$provider', 'Website', '0')") == true) {
 			            	$conn->query("INSERT INTO semua_pembelian VALUES ('','WEB-$order_id', '$order_id', '$sess_username', '$kategori', '$layanan', '$harga', '$post_target', 'Pending', '$date', '$time', 'WEB', '0')");
-				            $conn->query("UPDATE users SET saldo_top_up = saldo_top_up-$harga, pemakaian_saldo = pemakaian_saldo+$harga WHERE username = '$sess_username'");
+				            $conn->query("UPDATE users SET saldo_sosmed = saldo_sosmed-$harga, pemakaian_saldo = pemakaian_saldo+$harga WHERE username = '$sess_username'");
 				            $conn->query("INSERT INTO riwayat_saldo_koin VALUES ('', '$sess_username', 'Saldo', 'Pengurangan Saldo', '$harga', 'Mengurangi Saldo Sosial Media Melalui Pemesanan Sosial Media Dengan Kode Pesanan : WEB-$order_id', '$date', '$time')");
 			                if (mysqli_num_rows($check_top) == 0) {
 				                $insert_topup = $conn->query("INSERT INTO top_users VALUES ('', 'Order', '$sess_username', '$harga', '1')");
